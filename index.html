@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RESO | Экосистема внимания</title>
+    <style>
+        @font-face {
+            font-family: 'GeoForm';
+            src: url('geoform.ttf') format('truetype');
+        }
+        @font-face {
+            font-family: 'BlockyCircle';
+            src: url('blocky-circle.ttf') format('truetype');
+        }
+
+        :root {
+            --bg-dark: #0f0c29;
+            --purple-accent: #4C44E4;
+            --green-accent: #D9F260;
+            --text-light: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.05);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'GeoForm', sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            background-size: 400% 400%;
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-container { 
+            display: flex; 
+            flex-direction: column; 
+            cursor: pointer;
+        }
+
+        .logo {
+            font-family: 'BlockyCircle', serif;
+            font-size: 2.5rem;
+            color: var(--green-accent);
+            text-shadow: 0 0 15px rgba(217, 242, 96, 0.6);
+            letter-spacing: 2px;
+            line-height: 1;
+        }
+
+        .slogan {
+            font-family: 'GeoForm', sans-serif;
+            font-size: 0.7rem;
+            opacity: 0.8;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-top: 5px;
+            color: #ccc;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            transition: color 0.3s;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        nav a:hover { color: var(--green-accent); }
+
+        .auth-btn {
+            padding: 8px 20px;
+            border: 1px solid var(--green-accent);
+            color: var(--green-accent);
+            background: transparent;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'GeoForm', sans-serif;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+
+        .auth-btn:hover {
+            background: var(--green-accent);
+            color: var(--bg-dark);
+            box-shadow: 0 0 15px rgba(217, 242, 96, 0.4);
+        }
+
+        .burger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 6px;
+            z-index: 102;
+            padding: 5px;
+        }
+
+        .burger div {
+            width: 30px;
+            height: 3px;
+            background-color: var(--green-accent);
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+
+        .section-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+            width: 100%;
+        }
+
+        .resonance-ring {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border: 1px solid rgba(76, 68, 228, 0.3);
+            border-radius: 50%;
+            z-index: -1;
+            animation: pulseRing 4s infinite;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .resonance-ring:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            animation-delay: 1s;
+            border-color: rgba(217, 242, 96, 0.2);
+        }
+
+        @keyframes pulseRing {
+            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.2; }
+            100% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; }
+        }
+
+        h1 {
+            font-family: 'BlockyCircle', serif;
+            font-size: 4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #fff, var(--green-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+            max-width: 90%;
+        }
+
+        p.subtitle {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-bottom: 40px;
+            line-height: 1.6;
+            color: #ddd;
+        }
+
+        .cta-button {
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #0f0c29;
+            background-color: var(--green-accent);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(217, 242, 96, 0.4);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'GeoForm', sans-serif;
+            margin-bottom: 60px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(217, 242, 96, 0.7);
+            background-color: #fff;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 20px 10%;
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 80px;
+            z-index: 10;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(5px);
+            transition: transform 0.3s, border-color 0.3s, background 0.3s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--green-accent);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 20px;
+            fill: var(--green-accent);
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+            font-family: 'GeoForm', sans-serif;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            color: #aaa;
+            line-height: 1.5;
+        }
+
+        .reviews-section {
+            width: 100%;
+            padding: 80px 5%;
+            position: relative;
+            overflow: hidden;
+            background: rgba(0,0,0,0.2);
+        }
+
+        .reviews-title {
+            font-family: 'BlockyCircle', serif;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--green-accent);
+            text-transform: uppercase;
+            position: relative;
+            z-index: 2;
+        }
+
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .review-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 25px;
+            transition: transform 0.3s;
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--green-accent);
+        }
+
+        .review-text {
+            font-style: italic;
+            color: #ddd;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .review-author {
+            color: var(--green-accent);
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+
+        .scroll-object {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle at 30% 30%, var(--green-accent), var(--purple-accent));
+            border-radius: 50%;
+            box-shadow: 0 0 40px rgba(217, 242, 96, 0.3);
+            top: 50%;
+            left: -150px;
+            transform: translateY(-50%);
+            z-index: 1;
+            opacity: 0.6;
+            filter: blur(20px);
+            will-change: left;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: #1a163a;
+            padding: 40px 30px;
+            border-radius: 20px;
+            border: 1px solid var(--purple-accent);
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            box-shadow: 0 0 30px rgba(76, 68, 228, 0.3);
+            transform: scale(0.9);
+            transition: transform 0.3s;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #aaa;
+            line-height: 1;
+        }
+
+        .modal-title {
+            font-family: 'GeoForm', sans-serif;
+            font-size: 2rem;
+            color: var(--green-accent);
+            text-align: center;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ccc;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: white;
+            font-family: 'GeoForm', sans-serif;
+            outline: none;
+            transition: border-color 0.3s;
+            font-size: 1rem;
+        }
+
+        .form-input:focus {
+            border-color: var(--green-accent);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--green-accent);
+            border: none;
+            border-radius: 10px;
+            color: #0f0c29;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: 'GeoForm', sans-serif;
+            text-transform: uppercase;
+            transition: background 0.3s;
+            font-size: 1rem;
+        }
+
+        .submit-btn:hover {
+            background: #fff;
+        }
+
+        .switch-auth {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        .switch-auth span {
+            color: var(--green-accent);
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .user-display {
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-display.active {
+            display: flex;
+        }
+
+        .logout-btn {
+            font-size: 0.8rem;
+            color: #ff6b6b;
+            cursor: pointer;
+            text-decoration: underline;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 768px) {
+            header { padding: 12px 5%; }
+            
+            .burger { display: flex; }
+
+            .burger.active div:nth-child(1) {
+                transform: rotate(45deg) translate(6px, 6px);
+            }
+            .burger.active div:nth-child(2) {
+                opacity: 0;
+            }
+            .burger.active div:nth-child(3) {
+                transform: rotate(-45deg) translate(6px, -6px);
+            }
+
+            nav {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 85%;
+                max-width: 320px;
+                height: 100vh;
+                background: rgba(15, 12, 41, 0.98);
+                backdrop-filter: blur(15px);
+                flex-direction: column;
+                justify-content: center; 
+                align-items: center;
+                transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                z-index: 101;
+                border-left: 1px solid var(--glass-border);
+                box-shadow: -5px 0 20px rgba(0,0,0,0.5);
+                padding-top: 80px; /* Опускаем контент ниже */
+            }
+
+            nav.active {
+                right: 0;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 50px; /* Увеличенный отступ между пунктами */
+                width: 100%;
+                align-items: center;
+                padding: 0;
+            }
+
+            nav a {
+                font-size: 1.4rem;
+                text-align: center;
+                width: 100%;
+                display: block;
+                padding: 10px 0;
+            }
+
+            .logo { font-size: 1.8rem; }
+            h1 { font-size: 2.2rem; }
+            .reviews-title { font-size: 1.8rem; }
+            .scroll-object { width: 60px; height: 60px; }
+            
+            .modal-content {
+                padding: 30px 20px;
+                width: 90%;
+                max-width: 350px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container" onclick="resetView()">
+            <div class="logo">RESO</div>
+            <div class="slogan">Экосистема внимания</div>
+        </div>
+        
+        <div class="burger" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+
+        <nav id="nav-menu">
+            <ul>
+                <li><a href="#" onclick="resetView(); toggleMenu()">Главная</a></li>
+                <li><a href="#reviews" onclick="toggleMenu()">Отзывы</a></li>
+                <li><a href="#">Статьи</a></li>
+                <li><a href="#">Мотивация</a></li>
+                <li id="auth-link">
+                    <button class="auth-btn" onclick="openModal('login'); toggleMenu()">Вход</button>
+                </li>
+                <li id="user-link" class="user-display">
+                    <span id="username-display" style="color: var(--green-accent); font-weight: bold; text-transform: uppercase;"></span>
+                    <span class="logout-btn" onclick="logout(); toggleMenu()">Выйти</span>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="section-container">
+        <div class="resonance-ring"></div>
+        <div class="resonance-ring"></div>
+        
+        <h1>Настрой свой фокус</h1>
+        <p class="subtitle">
+            Персональное пространство для глубокой работы, осознанного дыхания и борьбы с прокрастинацией. 
+            Твой личный резонанс с продуктивностью.
+        </p>
+        
+        <button class="cta-button" onclick="handleStartSession()">Начать сеанс</button>
+
+        <div class="features">
+            <div class="card">
+                <img src="images/timer.svg" alt="Timer" class="card-icon">
+                <h3>ПОТОК ВРЕМЕНИ</h3>
+                <p>Умный таймер Pomodoro с адаптивными интервалами.</p>
+            </div>
+            <div class="card">
+                <img src="images/wind.svg" alt="Wind" class="card-icon">
+                <h3>ДЫХАНИЕ</h3>
+                <p>Гид по техникам дыхания для снятия стресса.</p>
+            </div>
+            <div class="card">
+                <img src="images/brians.svg" alt="Brains" class="card-icon">
+                <h3>АНТИ-ПРОКРАСТИНАЦИЯ</h3>
+                <p>База знаний и микро-задачи для старта.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="reviews" class="reviews-section">
+        <h2 class="reviews-title">Отзывы пользователей</h2>
+        <div class="scroll-object" id="scrollObj"></div>
+        <div class="reviews-grid">
+            <div class="review-card">
+                <p class="review-text">«Этот сервис изменил мой подход к работе. Таймер и звуки просто космос!»</p>
+                <p class="review-author">Алексей К.</p>
+            </div>
+            <div class="review-card">
+                <p class="review-text">«Наконец-то я могу сосредоточиться. Раздел с дыханием спасает в моменты стресса.»</p>
+                <p class="review-author">Мария В.</p>
+            </div>
+            <div class="review-card">
+                <p class="review-text">«Дизайн и функционал на высоте. Никакой лишней воды, только польза.»</p>
+                <p class="review-author">Дмитрий О.</p>
+            </div>
+            <div class="review-card">
+                <p class="review-text">«Лучший инструмент для борьбы с прокрастинацией. Рекомендую всем!»</p>
+                <p class="review-author">Елена С.</p>
+            </div>
+            <div class="review-card">
+                <p class="review-text">«Очень нравится анимация и общая атмосфера сайта. Помогает настроиться.»</p>
+                <p class="review-author">Игорь П.</p>
+            </div>
+            <div class="review-card">
+                <p class="review-text">«Просто и эффективно. Именно то, что нужно для ежедневной работы.»</p>
+                <p class="review-author">Анна Т.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal-overlay" id="authModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h2 class="modal-title" id="modalTitle">Вход</h2>
+            <form id="authForm" onsubmit="handleAuth(event)">
+                <div class="form-group">
+                    <label for="nickname">Никнейм</label>
+                    <input type="text" id="nickname" class="form-input" required placeholder="Уникальный ник">
+                </div>
+                <div class="form-group">
+                    <label for="password">Пароль</label>
+                    <input type="password" id="password" class="form-input" required placeholder="Любой пароль">
+                </div>
+                <button type="submit" class="submit-btn" id="submitBtn">Войти</button>
+            </form>
+            <div class="switch-auth">
+                <p id="switchText">Нет аккаунта? <span onclick="toggleAuthMode()">Зарегистрироваться</span></p>
+            </div>
+            <p id="errorMsg" style="color: #ff6b6b; text-align: center; margin-top: 10px; font-size: 0.9rem;"></p>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById('authModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const submitBtn = document.getElementById('submitBtn');
+        const switchText = document.getElementById('switchText');
+        const errorMsg = document.getElementById('errorMsg');
+        const authLink = document.getElementById('auth-link');
+        const userLink = document.getElementById('user-link');
+        const usernameDisplay = document.getElementById('username-display');
+        const nav = document.getElementById('nav-menu');
+        const burger = document.querySelector('.burger');
+        const scrollObj = document.getElementById('scrollObj');
+        const reviewsSection = document.getElementById('reviews');
+
+        let isLoginMode = true;
+        let lastScrollTop = 0;
+
+        function checkAuth() {
+            const currentUser = localStorage.getItem('reso_currentUser');
+            if (currentUser) {
+                authLink.style.display = 'none';
+                userLink.classList.add('active');
+                usernameDisplay.textContent = currentUser;
+            } else {
+                authLink.style.display = 'block';
+                userLink.classList.remove('active');
+            }
+        }
+
+        function resetView() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            checkAuth();
+        }
+
+        function toggleMenu() {
+            nav.classList.toggle('active');
+            burger.classList.toggle('active');
+            document.body.style.overflow = nav.classList.contains('active') ? 'hidden' : 'auto';
+        }
+
+        function openModal(mode) {
+            isLoginMode = mode === 'login';
+            updateModalView();
+            modal.classList.add('active');
+            errorMsg.textContent = '';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            errorMsg.textContent = '';
+            if (!nav.classList.contains('active')) {
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        function toggleAuthMode() {
+            isLoginMode = !isLoginMode;
+            updateModalView();
+            errorMsg.textContent = '';
+        }
+
+        function updateModalView() {
+            if (isLoginMode) {
+                modalTitle.textContent = 'Вход';
+                submitBtn.textContent = 'Войти';
+                switchText.innerHTML = 'Нет аккаунта? <span onclick="toggleAuthMode()">Зарегистрироваться</span>';
+            } else {
+                modalTitle.textContent = 'Регистрация';
+                submitBtn.textContent = 'Создать аккаунт';
+                switchText.innerHTML = 'Есть аккаунт? <span onclick="toggleAuthMode()">Войти</span>';
+            }
+        }
+
+        function handleAuth(e) {
+            e.preventDefault();
+            const nickname = document.getElementById('nickname').value.trim();
+            const password = document.getElementById('password').value;
+
+            if (!nickname || !password) {
+                errorMsg.textContent = 'Заполните все поля';
+                return;
+            }
+
+            const usersDB = JSON.parse(localStorage.getItem('reso_users')) || {};
+
+            if (isLoginMode) {
+                if (usersDB[nickname] && usersDB[nickname].password === password) {
+                    localStorage.setItem('reso_currentUser', nickname);
+                    closeModal();
+                    checkAuth();
+                } else {
+                    errorMsg.textContent = 'Неверный никнейм или пароль';
+                }
+            } else {
+                if (usersDB[nickname]) {
+                    errorMsg.textContent = 'Такой никнейм уже занят';
+                } else {
+                    usersDB[nickname] = { password: password };
+                    localStorage.setItem('reso_users', JSON.stringify(usersDB));
+                    localStorage.setItem('reso_currentUser', nickname);
+                    closeModal();
+                    checkAuth();
+                }
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('reso_currentUser');
+            checkAuth();
+        }
+
+        function handleStartSession() {
+            const currentUser = localStorage.getItem('reso_currentUser');
+            if (currentUser) {
+                window.location.href = 'cabinet.html';
+            } else {
+                openModal('login');
+            }
+        }
+
+        window.addEventListener('scroll', () => {
+            const sectionTop = reviewsSection.offsetTop;
+            const sectionHeight = reviewsSection.offsetHeight;
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            if (scrollTop > sectionTop - window.innerHeight && scrollTop < sectionTop + sectionHeight) {
+                const progress = (scrollTop - (sectionTop - window.innerHeight)) / (sectionHeight + window.innerHeight);
+                const moveRange = window.innerWidth + 200;
+                const newPos = -150 + (progress * moveRange);
+                
+                scrollObj.style.left = newPos + 'px';
+            }
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                nav.classList.remove('active');
+                burger.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        checkAuth();
+    </script>
+</body>
+</html>

@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RESO | Экосистема внимания</title>
+    <style>
+        @font-face {
+            font-family: 'GeoForm';
+            src: url('geoform.ttf') format('truetype');
+        }
+        @font-face {
+            font-family: 'BlockyCircle';
+            src: url('blocky-circle.ttf') format('truetype');
+        }
+
+        :root {
+            --bg-dark: #0f0c29;
+            --purple-accent: #4C44E4;
+            --green-accent: #D9F260;
+            --text-light: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.05);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'GeoForm', sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            background-size: 400% 400%;
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-container { display: flex; flex-direction: column; }
+
+        .logo {
+            font-family: 'BlockyCircle', serif;
+            font-size: 2.5rem;
+            color: var(--green-accent);
+            text-shadow: 0 0 15px rgba(217, 242, 96, 0.6);
+            letter-spacing: 2px;
+            line-height: 1;
+        }
+
+        .slogan {
+            font-family: 'GeoForm', sans-serif;
+            font-size: 0.8rem;
+            opacity: 0.8;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-top: 5px;
+            color: #ccc;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        nav a:hover { color: var(--green-accent); }
+
+        .auth-btn {
+            padding: 8px 20px;
+            border: 1px solid var(--green-accent);
+            color: var(--green-accent);
+            background: transparent;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'GeoForm', sans-serif;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .auth-btn:hover {
+            background: var(--green-accent);
+            color: var(--bg-dark);
+            box-shadow: 0 0 15px rgba(217, 242, 96, 0.4);
+        }
+
+        /* Общие стили для секций */
+        .section-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+            width: 100%;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .hidden {
+            display: none !important;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Фоновые кольца */
+        .resonance-ring {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border: 1px solid rgba(76, 68, 228, 0.3);
+            border-radius: 50%;
+            z-index: -1;
+            animation: pulseRing 4s infinite;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .resonance-ring:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            animation-delay: 1s;
+            border-color: rgba(217, 242, 96, 0.2);
+        }
+
+        @keyframes pulseRing {
+            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.2; }
+            100% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; }
+        }
+
+        /* Главный экран (до входа) */
+        h1 {
+            font-family: 'BlockyCircle', serif;
+            font-size: 4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #fff, var(--green-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+        }
+
+        p.subtitle {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-bottom: 40px;
+            line-height: 1.6;
+            color: #ddd;
+        }
+
+        .cta-button {
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #0f0c29;
+            background-color: var(--green-accent);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(217, 242, 96, 0.4);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'GeoForm', sans-serif;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(217, 242, 96, 0.7);
+            background-color: #fff;
+        }
+
+        /* Сетка карточек (общая) */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 40px 10%;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 20px; 
+            z-index: 10;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(5px);
+            transition: transform 0.3s, border-color 0.3s, background 0.3s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--green-accent);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 20px;
+            fill: var(--green-accent);
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+            font-family: 'GeoForm', sans-serif;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            color: #aaa;
+            line-height: 1.5;
+        }
+
+        /* Приветственный экран (после входа) */
+        .welcome-title {
+            font-family: 'BlockyCircle', serif;
+            font-size: 3.5rem;
+            color: var(--green-accent);
+            text-shadow: 0 0 20px rgba(217, 242, 96, 0.4);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .welcome-subtitle {
+            font-family: 'GeoForm', sans-serif;
+            font-size: 1.2rem;
+            color: #ccc;
+            margin-bottom: 40px;
+        }
+
+        /* Модальное окно */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: #1a163a;
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid var(--purple-accent);
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            box-shadow: 0 0 30px rgba(76, 68, 228, 0.3);
+            transform: scale(0.9);
+            transition: transform 0.3s;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #aaa;
+        }
+
+        .modal-title {
+            font-family: 'GeoForm', sans-serif;
+            font-size: 2rem;
+            color: var(--green-accent);
+            text-align: center;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ccc;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: white;
+            font-family: 'GeoForm', sans-serif;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus {
+            border-color: var(--green-accent);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--green-accent);
+            border: none;
+            border-radius: 10px;
+            color: #0f0c29;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: 'GeoForm', sans-serif;
+            text-transform: uppercase;
+            transition: background 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #fff;
+        }
+
+        .switch-auth {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        .switch-auth span {
+            color: var(--green-accent);
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .user-display {
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-display.active {
+            display: flex;
+        }
+
+        .logout-btn {
+            font-size: 0.8rem;
+            color: #ff6b6b;
+            cursor: pointer;
+            text-decoration: underline;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 768px) {
+            header { flex-direction: column; gap: 20px; }
+            nav ul { gap: 15px; font-size: 0.9rem; flex-wrap: wrap; justify-content: center; }
+            h1, .welcome-title { font-size: 2.5rem; }
+            .resonance-ring { width: 300px; height: 300px; }
+            .features { padding: 20px 5%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <div class="logo">RESO</div>
+            <div class="slogan">Экосистема внимания</div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#" onclick="resetView()">Главная</a></li>
+                <li><a href="#">Статьи</a></li>
+                <li><a href="#">Мотивация</a></li>
+                <li id="auth-link">
+                    <button class="auth-btn" onclick="openModal('login')">Вход</button>
+                </li>
+                <li id="user-link" class="user-display">
+                    <span id="username-display" style="color: var(--green-accent); font-weight: bold; text-transform: uppercase;"></span>
+                    <span class="logout-btn" onclick="logout()">Выйти</span>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- ГЛАВНЫЙ ЭКРАН (ДО ВХОДА) -->
+    <section id="landing-section" class="section-container">
+        <div class="resonance-ring"></div>
+        <div class="resonance-ring"></div>
+        
+        <h1>Настрой свой фокус</h1>
+        <p class="subtitle">
+            Персональное пространство для глубокой работы, осознанного дыхания и борьбы с прокрастинацией. 
+            Твой личный резонанс с продуктивностью.
+        </p>
+        
+        <button class="cta-button" onclick="handleStartSession()">Начать сеанс</button>
+
+        <!-- Карточки лендинга -->
+        <div class="features">
+            <div class="card">
+                <img src="images/timer.svg" alt="Timer" class="card-icon">
+                <h3>ПОТОК ВРЕМЕНИ</h3>
+                <p>Умный таймер Pomodoro с адаптивными интервалами.</p>
+            </div>
+            <div class="card">
+                <img src="images/wind.svg" alt="Wind" class="card-icon">
+                <h3>ДЫХАНИЕ</h3>
+                <p>Гид по техникам дыхания для снятия стресса.</p>
+            </div>
+            <div class="card">
+                <img src="images/brians.svg" alt="Brains" class="card-icon">
+                <h3>АНТИ-ПРОКРАСТИНАЦИЯ</h3>
+                <p>База знаний и микро-задачи для старта.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ПРИВЕТСТВЕННЫЙ ЭКРАН (ПОСЛЕ ВХОДА) -->
+    <section id="dashboard-section" class="section-container hidden">
+        <div class="resonance-ring"></div>
+        <div class="resonance-ring"></div>
+
+        <h2 class="welcome-title" id="welcome-text">ДОБРО ПОЖАЛОВАТЬ!</h2>
+        <p class="welcome-subtitle">Выберите инструмент для работы:</p>
+
+        <!-- Карточки дашборда -->
+        <div class="features">
+            <div class="card" onclick="alert('Запуск таймера...')">
+                <img src="images/timer.svg" alt="Timer" class="card-icon">
+                <h3>ПОТОК ВРЕМЕНИ</h3>
+                <p>Запустить таймер фокуса</p>
+            </div>
+            <div class="card" onclick="alert('Запуск дыхательной практики...')">
+                <img src="images/wind.svg" alt="Wind" class="card-icon">
+                <h3>ДЫХАНИЕ</h3>
+                <p>Начать практику дыхания</p>
+            </div>
+            <div class="card" onclick="alert('Открытие базы задач...')">
+                <img src="images/brians.svg" alt="Brains" class="card-icon">
+                <h3>АНТИ-ПРОКРАСТИНАЦИЯ</h3>
+                <p>Получить микро-задачу</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- МОДАЛЬНОЕ ОКНО АВТОРИЗАЦИИ -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h2 class="modal-title" id="modalTitle">Вход</h2>
+            <form id="authForm" onsubmit="handleAuth(event)">
+                <div class="form-group">
+                    <label for="nickname">Никнейм</label>
+                    <input type="text" id="nickname" class="form-input" required placeholder="Уникальный ник">
+                </div>
+                <div class="form-group">
+                    <label for="password">Пароль</label>
+                    <input type="password" id="password" class="form-input" required placeholder="Любой пароль">
+                </div>
+                <button type="submit" class="submit-btn" id="submitBtn">Войти</button>
+            </form>
+            <div class="switch-auth">
+                <p id="switchText">Нет аккаунта? <span onclick="toggleAuthMode()">Зарегистрироваться</span></p>
+            </div>
+            <p id="errorMsg" style="color: #ff6b6b; text-align: center; margin-top: 10px; font-size: 0.9rem;"></p>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById('authModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const submitBtn = document.getElementById('submitBtn');
+        const switchText = document.getElementById('switchText');
+        const errorMsg = document.getElementById('errorMsg');
+        const authLink = document.getElementById('auth-link');
+        const userLink = document.getElementById('user-link');
+        const usernameDisplay = document.getElementById('username-display');
+        
+        const landingSection = document.getElementById('landing-section');
+        const dashboardSection = document.getElementById('dashboard-section');
+        const welcomeText = document.getElementById('welcome-text');
+
+        let isLoginMode = true;
+
+        function checkAuth() {
+            const currentUser = localStorage.getItem('reso_currentUser');
+            if (currentUser) {
+                // Пользователь вошел
+                authLink.style.display = 'none';
+                userLink.classList.add('active');
+                usernameDisplay.textContent = currentUser;
+                
+                // Переключаем экраны
+                landingSection.classList.add('hidden');
+                dashboardSection.classList.remove('hidden');
+                
+                // Обновляем приветствие
+                welcomeText.textContent = `ДОБРО ПОЖАЛОВАТЬ, ${currentUser}!`;
+            } else {
+                // Пользователь не вошел
+                authLink.style.display = 'block';
+                userLink.classList.remove('active');
+                
+                // Показываем лендинг
+                landingSection.classList.remove('hidden');
+                dashboardSection.classList.add('hidden');
+            }
+        }
+
+        function resetView() {
+            checkAuth();
+        }
+
+        function openModal(mode) {
+            isLoginMode = mode === 'login';
+            updateModalView();
+            modal.classList.add('active');
+            errorMsg.textContent = '';
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            errorMsg.textContent = '';
+        }
+
+        function toggleAuthMode() {
+            isLoginMode = !isLoginMode;
+            updateModalView();
+            errorMsg.textContent = '';
+        }
+
+        function updateModalView() {
+            if (isLoginMode) {
+                modalTitle.textContent = 'Вход';
+                submitBtn.textContent = 'Войти';
+                switchText.innerHTML = 'Нет аккаунта? <span onclick="toggleAuthMode()">Зарегистрироваться</span>';
+            } else {
+                modalTitle.textContent = 'Регистрация';
+                submitBtn.textContent = 'Создать аккаунт';
+                switchText.innerHTML = 'Есть аккаунт? <span onclick="toggleAuthMode()">Войти</span>';
+            }
+        }
+
+        function handleAuth(e) {
+            e.preventDefault();
+            const nickname = document.getElementById('nickname').value.trim();
+            const password = document.getElementById('password').value;
+
+            if (!nickname || !password) {
+                errorMsg.textContent = 'Заполните все поля';
+                return;
+            }
+
+            const usersDB = JSON.parse(localStorage.getItem('reso_users')) || {};
+
+            if (isLoginMode) {
+                if (usersDB[nickname] && usersDB[nickname].password === password) {
+                    localStorage.setItem('reso_currentUser', nickname);
+                    closeModal();
+                    checkAuth();
+                } else {
+                    errorMsg.textContent = 'Неверный никнейм или пароль';
+                }
+            } else {
+                if (usersDB[nickname]) {
+                    errorMsg.textContent = 'Такой никнейм уже занят';
+                } else {
+                    usersDB[nickname] = { password: password };
+                    localStorage.setItem('reso_users', JSON.stringify(usersDB));
+                    localStorage.setItem('reso_currentUser', nickname);
+                    closeModal();
+                    checkAuth();
+                }
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('reso_currentUser');
+            checkAuth();
+        }
+
+        function handleStartSession() {
+            const currentUser = localStorage.getItem('reso_currentUser');
+            if (currentUser) {
+                // Если уже вошел, просто переходим на дашборд (хотя checkAuth и так это делает)
+                checkAuth();
+            } else {
+                // Если не вошел, открываем модалку
+                openModal('login');
+            }
+        }
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // Проверка при загрузке
+        checkAuth();
+    </script>
+</body>
+</html>
